@@ -10,23 +10,26 @@ import {
 } from '@nestjs/common';
 import { UserService } from '../service/user.service';
 import { Observable } from 'rxjs';
-import { User } from '../models/user.interface';
 import { DeleteResult, UpdateResult } from 'typeorm';
+import { UserEntity } from '../models/user.entity';
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
 
   @Post()
-  create(@Body() user: User): Observable<User> {
+  create(@Body() user: UserEntity): Observable<UserEntity> {
     return this.userService.create(user);
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number): Observable<User | null> {
+  findOne(
+    @Param('id', ParseIntPipe) id: number,
+  ): Observable<UserEntity | null> {
     return this.userService.findOne(id);
   }
+  
   @Get()
-  findAll(): Observable<User[]> {
+  findAll(): Observable<UserEntity[]> {
     return this.userService.findAll();
   }
 
@@ -38,7 +41,7 @@ export class UserController {
   @Put(':id')
   updateOne(
     @Param('id', ParseIntPipe) id: number,
-    @Body() user: User,
+    @Body() user: UserEntity,
   ): Observable<UpdateResult> {
     return this.userService.updateOne(id, user);
   }
